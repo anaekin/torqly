@@ -1,0 +1,17 @@
+<div class="col-md-6 offset-md-3 mt-4">
+  <% if flash[:notice] %>
+  <div class="alert alert-success" role="alert" role="alert" data-mdb-color="success" data-mdb-alert-init="" id="success_flash" data-mdb-alert-initialized="true">
+    <%= flash[:notice] %>
+  </div>
+  <% end %>
+  <% if flash[:alert] %>
+  <div class="alert alert-dismissible fade show alert-danger" role="alert" data-mdb-color="danger" data-mdb-alert-init="" id="danger_flash" data-mdb-alert-initialized="true">
+    <%= flash[:alert] %>
+    <%
+=begin%>
+    <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+    <%
+=end%>
+  </div>
+  <% end %>
+</div>

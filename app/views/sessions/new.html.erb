@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h2 class="text-center mb-4">Log in</h2>
+    <%= form_with url: login_path do |form| %>
+    <%
+=begin%>
+    <% if @user.errors.any? %>
+    <div class="alert alert-danger p-3" role="alert">
+      <ul class="list-unstyled mb-0">
+        <% @user.errors.full_messages.each do |message| %>
+        <li class="mb-1"><i class="fas fa-times-circle me-2 text-danger"></i><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <%
+=end%>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.email_field :email, class: "form-control", required: true, placeholder: "abc@example.com" %>
+      <%= form.label :email, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.password_field :password, class: "form-control", required: true, placeholder: "Password" %>
+      <%= form.label :password, class: "form-label" %>
+    </div>
+    <%
+=begin%>
+    <div class="mb-3 text-end">
+      <%= link_to "Forgot password?", forgotpassword_path%>
+    </div>
+    <%
+=end%>
+    <div class="text-center">
+      <%= form.submit "Log in", class: "btn btn-primary" %>
+    </div>
+
+    <div class="text-center mt-3">
+      <span class="px-1">Don't have an account?</span><%= link_to "Sign Up", signup_path%>
+    </div>
+    <% end %>
+  </div>
+</div>

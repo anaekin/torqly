@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h2 class="text-center mb-4">Sign Up</h2>
+    <%= form_with model: @user, url: signup_path do |form| %>
+    <% if @user.errors.any? %>
+    <div class="alert alert-danger p-3" role="alert">
+      <ul class="list-unstyled mb-0">
+        <% @user.errors.full_messages.each do |message| %>
+        <li class="mb-1"><i class="fas fa-times-circle me-2 text-danger"></i><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.text_field :name, class: "form-control", required: true, placeholder: "Your name" %>
+      <%= form.label :name, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.email_field :email, class: "form-control", required: true, placeholder: "abc@example.com" %>
+      <%= form.label :email, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.password_field :password, class: "form-control", required: true, placeholder: "Password" %>
+      <%= form.label :password, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.password_field :password_confirmation, class: "form-control", required: true, placeholder: "Confirm your password" %>
+      <%= form.label :password_confirmation, class: "form-label" %>
+    </div>
+    <div class="text-center">
+      <%= form.submit "Sign Up", class: "btn btn-primary" %>
+    </div>
+    <div class="text-center mt-3">
+      <span>Already have an account? </span><%= link_to "Log in", login_path %>
+    </div>
+    <% end %>
+  </div>
+</div>
