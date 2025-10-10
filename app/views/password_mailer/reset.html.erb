@@ -1,0 +1,16 @@
+<h2>Hi <%= @user.name || "there" %>,</h2>
+
+<p>We received a request to reset your password for your Torqly account.</p>
+
+<p>You can reset it by clicking the button below.
+  This link will expire in <strong>15 minutes</strong> for your security.</p>
+
+<p style="text-align: center; margin: 25px 0;">
+  <a href="<%= raw(edit_password_url(token: @token, email: @user.email)) %>">
+    Reset Password
+  </a>
+</p>
+
+<p>If you didn't request a password reset, you can safely ignore this email.</p>
+
+<p>Best,<br>Torqly Team</p>

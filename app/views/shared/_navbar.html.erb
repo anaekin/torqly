@@ -11,13 +11,23 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
-        <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp" height="15" alt="MDB Logo" loading="lazy" />
+        <%
+=begin%>
+        <img src="assets/images/torqly_logo.png" height="15" alt="Torqly Logo" loading="lazy" />
+        <%
+=end%>
+        <%= image_tag "torqly_logo.png", alt: "Torqly Logo", class: "rounded", height: 40 %>
       </a>
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <%= link_to "Home", root_path, class: "nav-link" %>
         </li>
+        <% if !Current.user.nil? %>
+        <li class="nav-item">
+          <%= link_to "Products", products_path, class: "nav-link" %>
+        </li>
+        <% end %>
         <li class="nav-item">
           <%= link_to "About", about_path, class: "nav-link" %>
         </li>
@@ -31,9 +41,9 @@
 
       <!-- Avatar -->
       <% if Current.user.nil? %>
-      <% if current_page?(root_path)  %>
-      <%= link_to "Log in", login_path, class: "btn btn-primary me-3" %>
-      <%= link_to "Sign Up", signup_path, class: "btn btn-secondary me-3" %>
+      <% if !current_page?(login_path) && !current_page?(signup_path) %>
+      <%= link_to "Log in", login_path, class: "btn btn-secondary me-3" %>
+      <%= link_to "Sign Up", signup_path, class: "btn btn-primary me-3" %>
       <% end %>
       <% else %>
       <span class="me-3">Hello, <%= Current.user.name %></span>
@@ -69,15 +79,18 @@
       <%
 =end%>
       <div class="dropdown">
-        <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+        <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarProfileMenu" role="button" aria-expanded="false">
+          <i class="fas fa-user"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileMenu">
           <li>
-            <a class="dropdown-item" href="#">My profile</a>
+            <%= link_to "My profile", view_profile_path(Current.user), class: "dropdown-item" %>
           </li>
           <li>
-            <%= link_to "Logout", logout_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "dropdown-item" %>
+            <%= link_to "My bookings", about_path, class: "dropdown-item"  %>
+          </li>
+          <li>
+            <%= link_to "Log out", logout_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "dropdown-item" %>
           </li>
         </ul>
       </div>

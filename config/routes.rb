@@ -12,12 +12,22 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   get "about", to: "about#index"
 
-  get "signup", to: "users#new"
-  post "signup", to: "users#create"
+  get "signup", to: "registrations#new"
+  post "signup", to: "registrations#create"
 
   get  "login", to: "sessions#new"
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
+
+  get "profile/:id", to: "profiles#new", as: "view_profile"
+  get "profile/:id/edit", to: "profiles#edit", as: "edit_profile"
+  patch "profile/:id", to: "profiles#update", as: "update_profile"
+
+  get "password/reset", to: "password_resets#new", as: "forgot_password"
+  post "password/reset", to: "password_resets#create", as: "create_password"
+  get "password/reset/edit", to: "password_resets#edit", as: "edit_password"
+  patch "password/reset/edit", to: "password_resets#update", as: "update_password"
+
 
   root to: "main#index"
 end

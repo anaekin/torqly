@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h3 class="mb-4 fw-bold text-primary text-center">Reset your password</h3>
+    <%= form_with url: create_password_path do |form| %>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= form.email_field :email, class: "form-control", required: true, placeholder: "abc@example.com" %>
+      <%= form.label :email, class: "form-label" %>
+    </div>
+    <div class="text-center">
+      <%= form.submit "Reset password", class: "btn btn-primary" %>
+    </div>
+    <% end %>
+  </div>
+</div>
