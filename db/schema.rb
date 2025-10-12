@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_201617) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_202607) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_201617) do
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "num_days", null: false
     t.index ["product_id"], name: "index_bookings_on_product_id"
     t.index ["start_date", "end_date"], name: "index_bookings_on_start_date_and_end_date"
     t.index ["user_id"], name: "index_bookings_on_user_id"
