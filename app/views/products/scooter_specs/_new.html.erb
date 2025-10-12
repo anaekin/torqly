@@ -1,0 +1,21 @@
+<fieldset data-vehicle-type-target="specs" data-type="scooter">
+  <h5 class="mb-3">Scooter Specifications</h5>
+  <div class="row g-2">
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :range_km, "Range (km)", class: "form-label" %>
+      <%= f.number_field :range_km, class: "form-control", min: 1, placeholder: "e.g., 120", required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :seat_storage, "Seat storage (L)", class: "form-label" %>
+      <%= f.number_field :seat_storage, class: "form-control", min: 1, placeholder: "e.g., 20", required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :helmet_included, class: "form-label d-block" %>
+      <div class="form-check form-switch">
+        <%= f.check_box :helmet_included, class: "form-check-input" %>
+      </div>
+    </div>
+  </div>
+</fieldset>

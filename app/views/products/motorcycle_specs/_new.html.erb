@@ -1,0 +1,20 @@
+<fieldset data-vehicle-type-target="specs" data-type="motorcycle">
+  <h5 class="mb-3">Motorcyle Specifications</h5>
+
+  <div class="row g-2">
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :engine_cc, "Engine (cc)", class: "form-label"  %>
+      <%= f.number_field :engine_cc, class: "form-control", placeholder: "e.g., 300", min: 1, required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :engine_nm, "Torque (Nm)", class: "form-label" %>
+      <%= f.number_field :engine_nm, class: "form-control", placeholder: "e.g., 50", min: 1, required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :engine_hp, "Power (hp)", class: "form-label" %>
+      <%= f.number_field :engine_hp, class: "form-control", placeholder: "e.g., 80", min: 1, required: true %>
+    </div>
+  </div>
+</fieldset>

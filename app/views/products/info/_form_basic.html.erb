@@ -1,0 +1,25 @@
+<h5 class="mb-3">Basic Details</h5>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.text_field :title, class: "form-control", required: true, placeholder: "Honda Civic", maxlength: 20 %>
+  <%= f.label :title, class: "form-label" %>
+</div>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.text_area :summary, class: "form-control", required: true, placeholder: "A brief description of the vehicle" %>
+  <%= f.label :summary, class: "form-label" %>
+</div>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.number_field :price, class: "form-control", required: true, step: 0.01, placeholder: "49.99" %>
+  <%= f.label :price, class: "form-label" %>
+</div>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.text_field :brand, class: "form-control", required: true, placeholder: "Honda" %>
+  <%= f.label :brand, class: "form-label" %>
+</div>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.text_field :model, class: "form-control", required: true, placeholder: "Civic" %>
+  <%= f.label :model, class: "form-label" %>
+</div>
+<div class="form-outline mb-3" data-mdb-input-init>
+  <%= f.number_field :year, class: "form-control", required: true, placeholder: "2020" %>
+  <%= f.label :year, class: "form-label" %>
+</div>

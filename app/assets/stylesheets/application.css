@@ -8,3 +8,9 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.card-img-fixed {
+  height: 220px; /* pick your height */
+  width: 100%;
+  object-fit: contain; /* crop to fill box */
+}

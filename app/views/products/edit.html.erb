@@ -1,0 +1,26 @@
+<div class="row mb-5">
+  <div class="col-md-8 offset-md-2">
+    <div class="row justify-content-between">
+      <div class="col-md-8">
+        <h3 class="mb-4 fw-bold text-primary text-start">Edit product details</h3>
+      </div>
+      <div class="col-md-4 text-end">
+        <%= link_to "Back", products_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+    <%= form_with model: @product, local: true, html: { multipart: true }, method: :patch do |form| %>
+    <%= render "shared/form_errors", object: form.object %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= render "products/info/form_basic", f: form %>
+      </div>
+      <div class="col-md-6">
+        <%= render "products/info/form_specs", f: form, disabled: true %>
+      </div>
+      <div class="my-3 text-center">
+        <%= form.submit "Update product", class: "btn btn-primary" %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product: one
+  summary: MyText
+  range_km: 1
+  helmet_included: false
+  seat_storage: false
+
+two:
+  product: two
+  summary: MyText
+  range_km: 1
+  helmet_included: false
+  seat_storage: false

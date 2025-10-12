@@ -1,0 +1,25 @@
+<fieldset data-vehicle-type-target="specs" data-type="car">
+  <h5 class="mb-3">Car Specifications</h5>
+  <div class="row g-3">
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :seats, class: "form-label" %>
+      <%= f.number_field :seats, class: "form-control", min: 1, required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :transmission, class: "form-label" %>
+      <%= f.select :transmission,
+                     [["Manual","manual"],["Automatic","automatic"]],
+                     {},
+                     class: "form-select", required: true %>
+    </div>
+
+    <div class="col-md-4" data-mdb-input-init>
+      <%= f.label :car_type, class: "form-label" %>
+      <%= f.select :car_type,
+                     [["Petrol","petrol"],["Diesel","diesel"],["Electric","electric"],["Hybrid","hybrid"]],
+                     {},
+                     class: "form-select", required: true %>
+    </div>
+  </div>
+</fieldset>

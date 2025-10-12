@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get "password/reset/edit", to: "password_resets#edit", as: "edit_password"
   patch "password/reset/edit", to: "password_resets#update", as: "update_password"
 
+  resources :products
 
   root to: "main#index"
 end

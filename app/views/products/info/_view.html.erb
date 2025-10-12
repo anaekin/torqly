@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between mb-2">
+  <h3 class="card-title mb-0"><%= product.title %></h3>
+  <span class="my-2 badge rounded-pill <%= product.enabled? ? 'bg-success' : 'bg-secondary' %>">
+    <%= product.enabled? ? 'Enabled' : 'Disabled' %>
+  </span>
+</div>
+
+<p class="text-muted mb-3"><%= product.summary %></p>
+
+<ul class="list-group list-group-flush mb-3">
+  <li class="list-group-item d-flex justify-content-between p-0">
+    <span>Brand</span> <strong><%= product.brand %></strong>
+  </li>
+  <li class="list-group-item d-flex justify-content-between p-0">
+    <span>Model</span> <strong><%= product.model %></strong>
+  </li>
+  <li class="list-group-item d-flex justify-content-between p-0">
+    <span>Year</span> <strong><%= product.year %></strong>
+  </li>
+  <li class="list-group-item d-flex justify-content-between p-0">
+    <span>Price</span>
+    <strong>
+      <%= number_to_currency(product.price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %>
+    </strong>
+  </li>
+  <li class="list-group-item d-flex justify-content-between p-0">
+    <span>Type</span>
+    <strong><%= product.product_type&.name %></strong>
+  </li>
+</ul>

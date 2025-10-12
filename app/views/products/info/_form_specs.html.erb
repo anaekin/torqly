@@ -1,0 +1,38 @@
+<h5 class="mb-3">Product Image</h5>
+<div class="mb-3" data-mdb-input-init>
+  <%= f.file_field :image, direct_upload: true, class: "form-control", placeholder: "Choose an image" %>
+</div>
+<h5 class="mb-3">Type</h5>
+<div data-controller="vehicle-type">
+  <div class="btn-group mb-3 <%= 'disabled shadow-0' if disabled %>" role="group" aria-label="Product Type">
+    <% @product_types.each do |pt| %>
+    <% rid = "product_type_#{pt.slug.parameterize}" %>
+    <% if disabled %>
+    <%= f.hidden_field :product_type_id, value: @product.product_type_id %>
+    <% end %>
+    <%= f.radio_button :product_type_id, pt.id,
+          id: rid,
+          class: "btn-check",
+          data: { slug: pt.slug, "vehicle-type-target": "radio", action: "vehicle-type#update" },
+          checked: (f.object.product_type_id || @product_types.first.id) == pt.id,
+          disabled: disabled %>
+    <label class="btn btn-secondary" for="<%= rid %>" data-mdb-ripple-init><%= pt.name %></label>
+    <% end %>
+  </div>
+
+  <%= f.fields_for :car_description do |c| %>
+  <%= render "products/car_specs/new", f: c %>
+  <% end %>
+
+  <%= f.fields_for :motorcycle_description do |m| %>
+  <%= render "products/motorcycle_specs/new", f: m %>
+  <% end %>
+
+  <%= f.fields_for :scooter_description do |s| %>
+  <%= render "products/scooter_specs/new", f: s %>
+  <% end %>
+</div>
+<div class="form-check my-3">
+  <%= f.check_box :enabled, class: "form-check-input", checked: true %>
+  <%= f.label :enabled, "Enabled", class: "form-check-label" %>
+</div>
