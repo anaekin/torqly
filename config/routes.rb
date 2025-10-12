@@ -30,5 +30,13 @@ Rails.application.routes.draw do
 
   resources :products
 
+  get "bookings", to: "bookings#new", as: "new_booking"
+  post "bookings", to: "bookings#create", as: "create_booking"
+  get "bookings/:id", to: "bookings#show", as: "view_booking"
+  get "bookings/:id/edit", to: "bookings#edit", as: "edit_booking"
+  patch "bookings/:id", to: "bookings#update", as: "update_booking"
+  delete "bookings/:id", to: "bookings#destroy", as: "delete_booking"
+  get "bookings", to: "bookings#index", as: "list_bookings"
+
   root to: "main#index"
 end

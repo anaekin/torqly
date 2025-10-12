@@ -23,7 +23,7 @@
         <li class="nav-item">
           <%= link_to "Home", root_path, class: "nav-link" %>
         </li>
-        <% if !Current.user.nil? %>
+        <% if is_admin? %>
         <li class="nav-item">
           <%= link_to "Products", products_path, class: "nav-link" %>
         </li>
@@ -40,7 +40,7 @@
     <div class="d-flex align-items-center">
 
       <!-- Avatar -->
-      <% if Current.user.nil? %>
+      <% if !is_logged_in? %>
       <% if !current_page?(login_path) && !current_page?(signup_path) %>
       <%= link_to "Log in", login_path, class: "btn btn-secondary me-3" %>
       <%= link_to "Sign Up", signup_path, class: "btn btn-primary me-3" %>

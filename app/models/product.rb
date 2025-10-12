@@ -21,6 +21,13 @@ class Product < ApplicationRecord
   def motorcycle? = product_type_slug == ProductType.motorcycle_slug
   def scooter?    = product_type_slug == ProductType.scooter_slug
 
+  scope :enabled, -> { where(enabled: true) }
+
+  def self.load_details(id)
+    includes(:product_type, :car_description, :motorcycle_description, :scooter_description)
+      .find(id)
+  end
+
   private
 
   def vehicle_description_presence

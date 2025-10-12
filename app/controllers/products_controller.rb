@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :require_login!
+  before_action :require_admin!, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :load_product_types, only: [ :new, :create, :edit, :update ]
 
   def index
@@ -14,9 +14,8 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product
-    .includes(:product_type, :car_description, :motorcycle_description, :scooter_description)
-    .find(params[:id])
+    @back_path = request.referer || root_path
+    @product = Product.load_details(params[:id])
   end
 
   def create
@@ -34,15 +33,11 @@ class ProductsController < ApplicationController
   end
 
   def edit
-    @product = Product
-    .includes(:product_type, :car_description, :motorcycle_description, :scooter_description)
-    .find(params[:id])
+    @product = Product.load_details(params[:id])
   end
 
   def update
-    @product = Product
-    .includes(:product_type, :car_description, :motorcycle_description, :scooter_description)
-    .find(params[:id])
+    @product = Product.load_details(params[:id])
 
     if @product.update(product_params)
       redirect_to products_path, notice: "Product updated successfully."

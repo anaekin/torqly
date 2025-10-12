@@ -1,1 +1,63 @@
 <h2 class="mb-4 fw-bold text-primary text-center">Welcome to Torqly</h2>
+<div class="container my-4">
+
+  <%= form_with url: root_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
+  <div class="col-md-3">
+    <label class="form-label">Type</label>
+    <select name="product_type" class="form-select">
+      <option value="">All</option>
+      <% @product_types.each do |pt| %>
+      <option value="<%= pt.slug %>" <%= "selected" if params[:product_type] == pt.slug %>>
+        <%= pt.name %>
+      </option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Start date</label>
+    <input type="date" name="start_date" class="form-control" value="<%= params[:start_date].presence || Date.today%>">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">End date</label>
+    <input type="date" name="end_date" class="form-control" value="<%= params[:end_date].presence %>">
+  </div>
+
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+  <% end %>
+
+  <hr class="my-4" />
+  <div class="row">
+    <% if !@products.present? %>
+    <div class="col-md-12">Search for products for your next trip to get started.</div>
+    <% else %>
+    <% @products.each do |product| %>
+    <div class="col-md-4 mb-4">
+      <div class="card rounded-2 shadow-3-strong border border-secondary">
+        <% if product.image.attached? %>
+        <%= image_tag url_for(product.image), class: "card-img-top card-img-fixed" %>
+        <% else %>
+        <img src="https://placehold.co/600x400" class="card-img-top card-img-fixed" alt="No image available">
+        <% end %>
+        <div class="card-body d-flex flex-column">
+          <%= render "products/info/view", product: product %>
+          <div class="gap-2 text-center">
+            <%= link_to "View", product_path(product), class: "btn btn-primary", role: "button" %>
+            <% if is_logged_in? %>
+            <%= link_to "Book", new_booking_path(product_id: product.id, 
+                                        start_date: params[:start_date].presence, 
+                                        end_date: params[:end_date].presence), 
+                                        class: "btn btn-outline-primary", 
+                                        role: "button" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+</div>
