@@ -12,8 +12,6 @@ Booking
 
 Transaction
 
-Favorite
-
 **Stories -**
 
 User panel

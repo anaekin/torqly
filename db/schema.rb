@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_11_141126) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_002800) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_11_141126) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "booked_price", null: false
+    t.string "license_number", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_bookings_on_product_id"
+    t.index ["start_date", "end_date"], name: "index_bookings_on_start_date_and_end_date"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+    t.check_constraint "end_date >= start_date", name: "bookings_valid_range"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'cancelled'::character varying, 'completed'::character varying]::text[])", name: "bookings_status_check"
   end
 
   create_table "car_descriptions", force: :cascade do |t|
@@ -106,6 +123,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_11_141126) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookings", "products"
+  add_foreign_key "bookings", "users"
   add_foreign_key "car_descriptions", "products"
   add_foreign_key "motorcycle_descriptions", "products"
   add_foreign_key "products", "product_types"
