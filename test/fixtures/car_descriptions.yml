@@ -5,11 +5,11 @@ one:
   summary: MyText
   seats: 1
   transmission: MyString
-  fuel_type: MyString
+  car_type: MyString
 
 two:
   product: two
   summary: MyText
   seats: 1
   transmission: MyString
-  fuel_type: MyString
+  car_type: MyString

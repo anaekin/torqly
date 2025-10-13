@@ -14,3 +14,7 @@
   width: 100%;
   object-fit: contain; /* crop to fill box */
 }
+
+.img-contain {
+  object-fit: contain;
+}

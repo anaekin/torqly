@@ -13,23 +13,23 @@
     <%= f.radio_button :product_type_id, pt.id,
           id: rid,
           class: "btn-check",
-          data: { slug: pt.slug, "vehicle-type-target": "radio", action: "vehicle-type#update" },
-          checked: (f.object.product_type_id || @product_types.first.id) == pt.id,
+          data: { slug: pt.slug, "vehicle-type-target": "radio", action: "change->vehicle-type#update" },
+          # checked: (f.object.product_type_id) == pt.id,
           disabled: disabled %>
     <label class="btn btn-secondary" for="<%= rid %>" data-mdb-ripple-init><%= pt.name %></label>
     <% end %>
   </div>
 
-  <%= f.fields_for :car_description do |c| %>
-  <%= render "products/car_specs/new", f: c %>
-  <% end %>
-
-  <%= f.fields_for :motorcycle_description do |m| %>
-  <%= render "products/motorcycle_specs/new", f: m %>
-  <% end %>
-
-  <%= f.fields_for :scooter_description do |s| %>
-  <%= render "products/scooter_specs/new", f: s %>
+  <%= f.fields_for :description do |desc| %>
+  <div data-vehicle-type-target="specs" data-type="car" class="mt-3 d-none">
+    <%= render "products/car_specs/new", f: desc %>
+  </div>
+  <div data-vehicle-type-target="specs" data-type="motorcycle" class="mt-3 d-none">
+    <%= render "products/motorcycle_specs/new", f: desc %>
+  </div>
+  <div data-vehicle-type-target="specs" data-type="scooter" class="mt-3 d-none">
+    <%= render "products/scooter_specs/new", f: desc %>
+  </div>
   <% end %>
 </div>
 <div class="form-check my-3">

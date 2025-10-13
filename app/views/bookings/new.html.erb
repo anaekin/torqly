@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col col-md-8 offset-md-2">
     <div class="d-flex justify-content-between mb-3">
-      <h2 class="fw-bold text-primary text-start">Product details</h2>
+      <h2 class="fw-bold text-primary text-start">Booking details</h2>
       <div class="text-end">
         <%= link_to "Back", @back_path, class: "btn btn-outline-secondary" %>
       </div>
@@ -9,22 +9,22 @@
   </div>
   <div class="col col-md-4 offset-md-2">
     <div class="card rounded-2 shadow-3-strong border border-secondary">
-      <%= render "products/info/image", product: @product %>
+      <%= render "products/info/image", product: @booking.product %>
 
       <div class="card-body d-flex flex-column">
-        <%= render "products/info/view", product: @product %>
+        <%= render "products/info/view", product: @booking.product %>
       </div>
     </div>
   </div>
   <div class="col col-md-4">
     <div class="d-flex flex-column align-items-end">
-      <p><strong>Product:</strong> <%= @product.title %></p>
+      <p><strong>Product:</strong> <%= @booking.product.title %></p>
       <p><strong>From:</strong> <%= @booking.start_date.to_s %></p>
       <p><strong>To:</strong> <%= @booking.end_date.to_s %></p>
-      <p><strong>Price per day:</strong> <%= number_to_currency(@product.price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
-      <p><strong>Days:</strong> <%= @num_days %></p>
+      <p><strong>Price per day:</strong> <%= number_to_currency(@booking.booked_price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+      <p><strong>Days:</strong> <%= @booking.num_days %></p>
       <hr class="hr hr-blurry w-100 bg-secondary" />
-      <p><strong>Total Price:</strong> <%= number_to_currency(@product.price * @num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+      <p><strong>Total Price:</strong> <%= number_to_currency(@booking.booked_price * @booking.num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
     </div>
     <%= form_with model: @booking, url: create_booking_path, local: true do |f|  %>
     <%= render "shared/form_errors", object: f.object %>

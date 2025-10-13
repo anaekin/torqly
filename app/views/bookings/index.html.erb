@@ -1,0 +1,56 @@
+<% if !@bookings.present? %>
+<div class="alert alert-info" role="alert">No bookings found</div>
+<% else %>
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Days</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bookings.each do |b| %>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <% if b.product.image.attached? %>
+          <%= image_tag url_for(b.product.image), class: "rounded-circle img-contain", style: "width: 45px; height: 45px" %>
+          <% end %>
+          <div class="ms-3">
+            <p class="fw-bold mb-1"><%= b.product.title %></p>
+            <p class="text-muted mb-0"><%= b.product.product_type.name %></p>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1"><%= b.start_date %></p>
+      </td>
+      <td>
+        <p class="fw-normal mb-1"><%= b.end_date %></p>
+      </td>
+      <td>
+        <p class="fw-normal mb-1"><%= b.num_days %></p>
+      </td>
+      <td>
+        <p class="fw-normal mb-1"><%= number_to_currency(b.booked_price * b.num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+      </td>
+      <td>
+        <span class="badge <%= "bg-warning" if b.status == "pending" %> <%= "bg-success" if b.status == "confirmed" %> <%= "bg-danger" if b.status == "cancelled" %> <%= "bg-light" if b.status == "completed" %> rounded-pill d-inline"><%= b.status.capitalize %></span>
+      </td>
+      <td>
+        <% if b.pending? or b.confirmed? %>
+        <%= button_to "Cancel", delete_booking_path(b), method: :delete, data: { turbo_confirm: "Do you want to delete the booking?" }, class: "btn btn-link btn-sm btn-rounded", role: "button" %>
+        <% else %>
+        -
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

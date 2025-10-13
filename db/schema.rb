@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_202607) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_231955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,24 +60,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_202607) do
     t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'cancelled'::character varying, 'completed'::character varying]::text[])", name: "bookings_status_check"
   end
 
-  create_table "car_descriptions", force: :cascade do |t|
+  create_table "descriptions", force: :cascade do |t|
     t.bigint "product_id", null: false
+    t.bigint "product_type_id", null: false
+    t.string "type", null: false
     t.integer "seats", default: 4
     t.string "transmission", default: "manual"
     t.string "car_type", default: "petrol"
+    t.integer "engine_cc"
+    t.integer "engine_hp"
+    t.integer "engine_nm"
+    t.integer "range_km"
+    t.boolean "helmet_included"
+    t.integer "seat_storage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_car_descriptions_on_product_id"
-  end
-
-  create_table "motorcycle_descriptions", force: :cascade do |t|
-    t.bigint "product_id", null: false
-    t.integer "engine_cc", null: false
-    t.integer "engine_hp", null: false
-    t.integer "engine_nm", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_motorcycle_descriptions_on_product_id"
+    t.index ["product_id"], name: "index_descriptions_on_product_id"
+    t.index ["product_type_id"], name: "index_descriptions_on_product_type_id"
   end
 
   create_table "product_types", force: :cascade do |t|
@@ -101,16 +100,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_202607) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_type_id"], name: "index_products_on_product_type_id"
-  end
-
-  create_table "scooter_descriptions", force: :cascade do |t|
-    t.bigint "product_id", null: false
-    t.integer "range_km", null: false
-    t.boolean "helmet_included", null: false
-    t.integer "seat_storage", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_scooter_descriptions_on_product_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -143,9 +132,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_202607) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "products"
   add_foreign_key "bookings", "users"
-  add_foreign_key "car_descriptions", "products"
-  add_foreign_key "motorcycle_descriptions", "products"
+  add_foreign_key "descriptions", "product_types"
+  add_foreign_key "descriptions", "products"
   add_foreign_key "products", "product_types"
-  add_foreign_key "scooter_descriptions", "products"
   add_foreign_key "transactions", "bookings"
 end

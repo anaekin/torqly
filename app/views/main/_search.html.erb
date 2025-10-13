@@ -1,15 +1,27 @@
-<div class="row justify-content-center">
-  <div class="col-md-6 p-4">
-    <h3 class="mb-4 fw-bold text-primary">Search cars, motorcycles, or scooters</h3>
-
-    <div class="input-group">
-      <div class="form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control" />
-        <label class="form-label" for="form1">Search</label>
-      </div>
-      <button type="button" class="btn btn-primary" data-mdb-ripple-init>
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
-  </div>
+<%= form_with url: root_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
+<div class="col-md-3">
+  <label class="form-label">Type</label>
+  <select name="product_type" class="form-select">
+    <option value="">All</option>
+    <% @product_types.each do |pt| %>
+    <option value="<%= pt.slug %>" <%= "selected" if params[:product_type] == pt.slug %>>
+      <%= pt.name %>
+    </option>
+    <% end %>
+  </select>
 </div>
+
+<div class="col-md-3">
+  <label class="form-label">Start date</label>
+  <input type="date" name="start_date" class="form-control" value="<%= params[:start_date].presence || Date.today%>">
+</div>
+
+<div class="col-md-3">
+  <label class="form-label">End date</label>
+  <input type="date" name="end_date" class="form-control" value="<%= params[:end_date].presence %>">
+</div>
+
+<div class="col-md-3">
+  <button type="submit" class="btn btn-primary w-100">Search</button>
+</div>
+<% end %>

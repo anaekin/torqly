@@ -1,28 +1,22 @@
 class ProductsController < ApplicationController
-  before_action :require_admin!, only: [ :new, :create, :edit, :update, :destroy ]
-  before_action :load_product_types, only: [ :new, :create, :edit, :update ]
+  before_action :require_admin!, only: [ :new, :create, :edit, :destroy ]
+  before_action :load_product_types, only: [ :new, :create, :edit, :destroy ]
+  before_action :find_product, except: [ :index, :new, :create ]
 
   def index
-    @products = Product.includes(:product_type).order(updated_at: :desc)
+    @products = Product.includes(:product_type, :description).order(updated_at: :desc)
   end
 
   def new
-    @product = Product.new(enabled: true)
-    @product.build_car_description
-    @product.build_motorcycle_description
-    @product.build_scooter_description
+    @product = Product.new(enabled: true, product_type_id: @product_types.first&.id)
   end
 
   def show
     @back_path = request.referer || root_path
-    @product = Product.load_details(params[:id])
   end
 
   def create
     @product = Product.new(product_params)
-    @product.product_type_id ||= @product_types.first&.id
-
-    build_vehicle_description(@product)
 
     if @product.save
       redirect_to products_path, notice: "Product created successfully."
@@ -33,12 +27,9 @@ class ProductsController < ApplicationController
   end
 
   def edit
-    @product = Product.load_details(params[:id])
   end
 
   def update
-    @product = Product.load_details(params[:id])
-
     if @product.update(product_params)
       redirect_to products_path, notice: "Product updated successfully."
     else
@@ -47,44 +38,32 @@ class ProductsController < ApplicationController
     end
   end
 
+
   def destroy
-    @product = Product.find(params[:id])
+    if @product.bookings.any?
+      redirect_to products_path, alert: "Product has bookings and cannot be deleted."
+    end
+
     @product.destroy
     redirect_to products_path, notice: "Product deleted successfully."
   end
 
   private
+  def find_product
+    @product = Product.find(params[:id])
+  end
+
   def load_product_types
     @product_types = ProductType.order(:name)
   end
 
   def product_params
-    chosen_type_id = params.dig(:product, :product_type_id)
-    slug = ProductType.where(id: chosen_type_id).pick(:slug)
-
-    base = [
+    params.require(:product).permit(
       :title, :summary, :price, :brand, :model, :year,
-      :image, :enabled, :product_type_id
-    ]
-
-    nested =
-      case slug
-      when ProductType.car_slug
-        { car_description_attributes:        [ :id, :seats, :transmission, :car_type ] }
-      when ProductType.motorcycle_slug
-        { motorcycle_description_attributes: [ :id, :engine_cc, :engine_nm, :engine_hp ] }
-      when ProductType.scooter_slug
-        { scooter_description_attributes:    [ :id, :range_km, :helmet_included, :seat_storage ] }
-      else
-        nil
-      end
-    params.require(:product).permit(*base, **nested)
-  end
-
-  def build_vehicle_description(product)
-    if product.car? then product.build_car_description unless product.car_description
-    elsif product.motorcycle? then product.build_motorcycle_description unless product.motorcycle_description
-    elsif product.scooter? then product.build_scooter_description unless product.scooter_description
-    end
+      :image, :enabled, :product_type_id,
+      description_attributes: [ :id, :seats, :transmission, :car_type,
+                              :engine_cc, :engine_hp, :engine_nm,
+                              :range_km, :helmet_included, :seat_storage ]
+    )
   end
 end

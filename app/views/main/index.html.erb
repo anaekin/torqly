@@ -1,38 +1,14 @@
-<h2 class="mb-4 fw-bold text-primary text-center">Welcome to Torqly</h2>
+<h1 class="mb-3 h1 fw-bold text-center text-primary">Welcome to Torqly</h1>
+<h4 class="mb-3 h4 fw-light text-muted text-center">Rent cars, motorcycles, or scooters</h4>
+
 <div class="container my-4">
 
-  <%= form_with url: root_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
-  <div class="col-md-3">
-    <label class="form-label">Type</label>
-    <select name="product_type" class="form-select">
-      <option value="">All</option>
-      <% @product_types.each do |pt| %>
-      <option value="<%= pt.slug %>" <%= "selected" if params[:product_type] == pt.slug %>>
-        <%= pt.name %>
-      </option>
-      <% end %>
-    </select>
-  </div>
-
-  <div class="col-md-3">
-    <label class="form-label">Start date</label>
-    <input type="date" name="start_date" class="form-control" value="<%= params[:start_date].presence || Date.today%>">
-  </div>
-
-  <div class="col-md-3">
-    <label class="form-label">End date</label>
-    <input type="date" name="end_date" class="form-control" value="<%= params[:end_date].presence %>">
-  </div>
-
-  <div class="col-md-3">
-    <button type="submit" class="btn btn-primary w-100">Search</button>
-  </div>
-  <% end %>
+  <%= render "main/search" %>
 
   <hr class="my-4" />
   <div class="row">
     <% if !@products.present? %>
-    <div class="col-md-12">Search for products for your next trip to get started.</div>
+    <div class="col-md-12">Search for a product to see available products.</div>
     <% else %>
     <% @products.each do |product| %>
     <div class="col-md-4 mb-4">
