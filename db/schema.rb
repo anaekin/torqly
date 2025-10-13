@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_231955) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_13_132656) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -79,6 +79,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_231955) do
     t.index ["product_type_id"], name: "index_descriptions_on_product_type_id"
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.integer "amount", null: false
+    t.string "payment_type", default: "card", null: false
+    t.string "status", default: "pending", null: false
+    t.string "provider"
+    t.string "payment_ref"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_payments_on_booking_id"
+    t.index ["payment_type"], name: "index_payments_on_payment_type"
+    t.index ["status"], name: "index_payments_on_status"
+    t.check_constraint "payment_type::text = ANY (ARRAY['card'::character varying, 'bank_transfer'::character varying, 'cash'::character varying, 'other'::character varying]::text[])", name: "payments_payment_type_check"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'succeeded'::character varying, 'failed'::character varying, 'refunded'::character varying]::text[])", name: "payments_status_check"
+  end
+
   create_table "product_types", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -102,22 +118,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_231955) do
     t.index ["product_type_id"], name: "index_products_on_product_type_id"
   end
 
-  create_table "transactions", force: :cascade do |t|
-    t.bigint "booking_id", null: false
-    t.integer "amount", null: false
-    t.string "payment_type", default: "card", null: false
-    t.string "status", default: "pending", null: false
-    t.string "provider"
-    t.string "payment_ref"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["booking_id"], name: "index_transactions_on_booking_id"
-    t.index ["payment_type"], name: "index_transactions_on_payment_type"
-    t.index ["status"], name: "index_transactions_on_status"
-    t.check_constraint "payment_type::text = ANY (ARRAY['card'::character varying, 'bank_transfer'::character varying, 'cash'::character varying, 'other'::character varying]::text[])", name: "transactions_payment_type_check"
-    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'succeeded'::character varying, 'failed'::character varying, 'refunded'::character varying]::text[])", name: "transactions_status_check"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
@@ -134,6 +134,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_231955) do
   add_foreign_key "bookings", "users"
   add_foreign_key "descriptions", "product_types"
   add_foreign_key "descriptions", "products"
+  add_foreign_key "payments", "bookings"
   add_foreign_key "products", "product_types"
-  add_foreign_key "transactions", "bookings"
 end

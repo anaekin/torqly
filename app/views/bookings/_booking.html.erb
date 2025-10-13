@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-end">
+  <p><strong>Product:</strong> <%= booking.product.title %></p>
+  <p><strong>From:</strong> <%= booking.start_date.to_s %></p>
+  <p><strong>To:</strong> <%= booking.end_date.to_s %></p>
+  <p><strong>Price per day:</strong> <%= number_to_currency(booking.booked_price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+  <p><strong>Days:</strong> <%= booking.num_days %></p>
+  <hr class="hr hr-blurry w-100 bg-secondary" />
+  <p><strong>Total Amount:</strong> <%= number_to_currency(booking.booked_price * booking.num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+</div>

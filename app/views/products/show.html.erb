@@ -16,19 +16,6 @@
     <div class="d-flex flex-column">
       <%= render "products/info/view", product: @product %>
       <%= render "products/info/specs", product: @product %>
-
-      <div class="d-flex gap-2 mb-3">
-        <% if is_admin? %>
-        <%= link_to "Edit", edit_product_path(@product), class: "btn btn-primary" %>
-        <%= button_to "Delete", product_path(@product),
-                        method: :delete,
-                        data: { turbo_confirm: "Do you want to delete the product?" },
-                        class: "btn btn-danger" %>
-
-        <% end %>
-        <%= link_to "Book", new_booking_path(@product), class: "btn btn-outline-primary", role: "button" %>
-      </div>
-
     </div>
   </div>
 </div>

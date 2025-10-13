@@ -1,4 +1,4 @@
-class Transaction < ApplicationRecord
+class Payment < ApplicationRecord
   belongs_to :booking
 
   enum :status, { pending: "pending", succeeded: "succeeded", failed: "failed", refunded: "refunded" }

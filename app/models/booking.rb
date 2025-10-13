@@ -1,7 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :user
   belongs_to :product
-  has_many :transactions, dependent: :destroy
+  has_many :payments, dependent: :destroy
 
   enum :status, { pending: "pending", confirmed: "confirmed", cancelled: "cancelled", completed: "completed" }
 

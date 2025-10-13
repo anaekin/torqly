@@ -34,7 +34,7 @@ class BookingsController < ApplicationController
       end
 
       if booking.save
-        redirect_to list_bookings_path, notice: "Booking created successfully."
+        redirect_to new_payment_path(booking.id), notice: "Booking successful. Please pay to confirm your booking."
       else
         render :new, status: :unprocessable_entity
       end
@@ -50,7 +50,11 @@ class BookingsController < ApplicationController
   def destroy
     booking = Booking.find(params[:id])
     if booking.pending? or booking.confirmed?
-      booking.update(status: "cancelled")
+      Booking.transaction do
+        booking.update!(status: "cancelled")
+        booking.payments.where.not(status: "succeeded")
+              .update_all(status: "refunded")
+      end
       redirect_to list_bookings_path, notice: "Booking cancelled successfully."
     else
       flash.now[:alert] = "Only pending and confirmed bookings can be cancelled."

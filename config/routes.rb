@@ -36,5 +36,8 @@ Rails.application.routes.draw do
   get "bookings/:id", to: "bookings#show", as: "view_booking"
   delete "bookings/:id", to: "bookings#destroy", as: "delete_booking"
 
+  get "bookings/:id/payment/new", to: "payments#new", as: "new_payment"
+  post "bookings/:id/payment", to: "payments#create", as: "create_payment"
+
   root to: "main#index"
 end

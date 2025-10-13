@@ -17,15 +17,7 @@
     </div>
   </div>
   <div class="col col-md-4">
-    <div class="d-flex flex-column align-items-end">
-      <p><strong>Product:</strong> <%= @booking.product.title %></p>
-      <p><strong>From:</strong> <%= @booking.start_date.to_s %></p>
-      <p><strong>To:</strong> <%= @booking.end_date.to_s %></p>
-      <p><strong>Price per day:</strong> <%= number_to_currency(@booking.booked_price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
-      <p><strong>Days:</strong> <%= @booking.num_days %></p>
-      <hr class="hr hr-blurry w-100 bg-secondary" />
-      <p><strong>Total Price:</strong> <%= number_to_currency(@booking.booked_price * @booking.num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
-    </div>
+    <%= render "booking", booking: @booking %>
     <%= form_with model: @booking, url: create_booking_path, local: true do |f|  %>
     <%= render "shared/form_errors", object: f.object %>
     <div class="mb-3">
@@ -36,5 +28,4 @@
     <%= f.submit "Confirm & Pay", class: "btn btn-primary w-100" %>
     <% end %>
   </div>
-
 </div>
