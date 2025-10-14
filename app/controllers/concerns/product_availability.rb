@@ -1,14 +1,17 @@
 module ProductAvailability
   extend ActiveSupport::Concern
 
-  def get_overlapping_products(from, to)
-    Booking.where.not(status: :cancelled).where(start_date: ..to, end_date: from..).pluck(:product_id).uniq
+  def get_overlapping_products(from, to = nil)
+    if to.nil?
+      Booking.where.not(status: :cancelled).where.not(end_date: ...from).pluck(:product_id).uniq
+    else
+      Booking.where.not(status: :cancelled).where(start_date: ..to, end_date: from..).pluck(:product_id).uniq
+    end
   end
 
-  def available_products(from, to, slug)
+  def available_products(from, to = nil, slug)
     scope = Product.where(enabled: true).includes(:product_type)
     scope = scope.where(product_type: ProductType.where(slug: slug)) if slug && ProductType::SLUGS.value?(slug)
-    return scope if from.blank? || to.blank?
 
     # check for products that overlap with search dates
     # Requested: [20————25] [from...to]

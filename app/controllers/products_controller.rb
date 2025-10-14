@@ -32,7 +32,7 @@ class ProductsController < ApplicationController
     if @product.update(product_params)
       redirect_to products_path, notice: "Product updated successfully."
     else
-      flash.now[:alert] = "Please check your details and try again."
+      flash.now[:alert] = @product.errors.full_messages.to_sentence
       render :edit, status: :unprocessable_entity
     end
   end

@@ -1,14 +1,17 @@
-<h1 class="mb-3 h1 fw-bold text-center text-primary">Welcome to Torqly</h1>
-<h4 class="mb-3 h4 fw-light text-muted text-center">Rent cars, motorcycles, or scooters</h4>
-
 <div class="container my-4">
+  <h1 class="mb-3 h1 fw-bold text-center text-primary">Welcome to Torqly</h1>
+  <h4 class="mb-3 h4 fw-light text-muted text-center">Rent cars, motorcycles, or scooters</h4>
 
   <%= render "main/search" %>
 
   <hr class="my-4" />
+
   <div class="row">
-    <% if !@products.present? %>
-    <div class="col-md-12">Search for a product to see available products.</div>
+    <% if @products.nil? %>
+    <h5 class="mb-3 text-muted text-center">Search for list of available products</h5>
+    <% elsif @products.empty? %>
+    <div class="col-md-12 text-center"></div>
+    <h5 class="mb-3 text-muted text-center">No products found. Please modify your search.</h5>
     <% else %>
     <% @products.each do |product| %>
     <div class="col-md-4 mb-4">
@@ -25,7 +28,7 @@
             <% if is_logged_in? %>
             <%= link_to "Book", new_booking_path(product_id: product.id, 
                                         start_date: params[:start_date].presence, 
-                                        end_date: params[:end_date].presence), 
+                                        end_date: params[:end_date].presence || Date.tomorrow,), 
                                         class: "btn btn-outline-primary", 
                                         role: "button" %>
             <% end %>

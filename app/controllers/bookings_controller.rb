@@ -30,7 +30,8 @@ class BookingsController < ApplicationController
 
     if booking.valid?
       if !is_product_available?(booking.start_date, booking.end_date, booking.product_id)
-        redirect_to root_path, alert: "Product is not available for the selected dates. Please try again." and return
+        redirect_to root_path, alert: "Product is not available for the selected dates. Please try again."
+        return
       end
 
       if booking.save
@@ -44,22 +45,25 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @booking = Booking.find(params[:id])
+    @booking = Booking.find_by!(id: params[:id], user_id: Current.user.id)
   end
 
   def destroy
-    booking = Booking.find(params[:id])
-    if booking.pending? or booking.confirmed?
-      Booking.transaction do
+    booking = Booking.find_by!(id: params[:id], user_id: Current.user.id)
+    if !booking.pending? and !booking.confirmed?
+      redirect_to list_bookings_path, alert: "Only pending and confirmed bookings can be cancelled."
+      return
+    elsif booking.start_date <= Date.today
+      redirect_to list_bookings_path, alert: "Booking cannot be cancelled as it has already started."
+      return
+    end
+
+    Booking.transaction do
         booking.update!(status: "cancelled")
         booking.payments.where.not(status: "succeeded")
               .update_all(status: "refunded")
-      end
-      redirect_to list_bookings_path, notice: "Booking cancelled successfully."
-    else
-      flash.now[:alert] = "Only pending and confirmed bookings can be cancelled."
-      render :index, status: :unprocessable_entity
     end
+    redirect_to list_bookings_path, notice: "Booking cancelled successfully."
   end
 
   private

@@ -8,7 +8,7 @@ class Booking < ApplicationRecord
   validates :start_date, :end_date, :license_number, :booked_price, :product_id, :user_id, :num_days, presence: true
   validates :booked_price, numericality: { greater_than_or_equal_to: 0 }
 
-  validate :valid_start_date, :valid_end_date
+  validate :valid_start_date, :valid_end_date, if: :new_record?
 
   after_initialize :set_default_values, if: :new_record?
 
