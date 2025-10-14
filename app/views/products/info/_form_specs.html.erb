@@ -11,11 +11,13 @@
           id: rid,
           class: "btn-check",
           data: { slug: pt.slug, "vehicle-type-target": "radio", action: "change->vehicle-type#update" },
-          # checked: (f.object.product_type_id) == pt.id,
+          checked: (f.object.product_type_id) == pt.id,
           disabled: disabled %>
     <label class="btn btn-secondary" for="<%= rid %>" data-mdb-ripple-init><%= pt.name %></label>
     <% end %>
   </div>
+
+  <h5 class="mb-3"><%= f.object.product_type.name %> Specifications</h5>
 
   <%= f.fields_for :description do |desc| %>
   <div data-vehicle-type-target="specs" data-type="car" class="mt-3 d-none">

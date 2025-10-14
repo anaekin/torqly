@@ -1,5 +1,5 @@
 <div class="mb-2">
-  <h4><%= product.product_type.name %> Specs</h4>
+  <h5 class="mb-3"><%= product.product_type.name %> Specifications</h5>
   <% if product.car? %>
   <%= render "products/car_specs/view", desc: product.description %>
   <% elsif product.motorcycle? %>

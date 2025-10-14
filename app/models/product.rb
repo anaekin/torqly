@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   belongs_to :product_type
   has_one :description, dependent: :destroy
   has_one_attached :image, dependent: :purge_later
-  has_many :bookings
+  has_many :bookings, dependent: :restrict_with_error
   accepts_nested_attributes_for :description
 
   default_scope { includes(:product_type, :description) }

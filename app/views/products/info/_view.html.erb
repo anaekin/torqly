@@ -10,6 +10,7 @@
 
   <p class="text-muted mb-3"><%= product.summary %></p>
 
+  <h5 class="mb-3">Basic Details</h5>
   <ul class="list-group list-group-flush mb-3">
     <li class="list-group-item d-flex justify-content-between p-0">
       <span>Brand</span> <strong><%= product.brand %></strong>
@@ -23,7 +24,7 @@
     <li class="list-group-item d-flex justify-content-between p-0">
       <span>Price</span>
       <strong>
-        <%= number_to_currency(product.price, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %>
+        <%= render "shared/currency", amount: product.price %>
       </strong>
     </li>
     <li class="list-group-item d-flex justify-content-between p-0">

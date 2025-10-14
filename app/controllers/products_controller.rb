@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :require_admin!, only: [ :new, :create, :edit, :destroy ]
   before_action :load_product_types, only: [ :new, :create, :edit, :destroy ]
-  before_action :find_product, except: [ :index, :new, :create ]
+  before_action :load_product, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @products = Product.includes(:product_type, :description).order(updated_at: :desc)
@@ -11,19 +11,18 @@ class ProductsController < ApplicationController
     @product = Product.new(enabled: true, product_type_id: @product_types.first&.id)
   end
 
-  def show
-    @back_path = request.referer || root_path
-  end
-
   def create
     @product = Product.new(product_params)
 
     if @product.save
       redirect_to products_path, notice: "Product created successfully."
     else
-      @product_types = ProductType.all
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def show
+    @back_path = request.referer || root_path
   end
 
   def edit
@@ -33,23 +32,21 @@ class ProductsController < ApplicationController
     if @product.update(product_params)
       redirect_to products_path, notice: "Product updated successfully."
     else
-      @product_types = ProductType.all
+      flash.now[:alert] = "Please check your details and try again."
       render :edit, status: :unprocessable_entity
     end
   end
 
-
   def destroy
-    if @product.bookings.any?
-      redirect_to products_path, alert: "Product has bookings and cannot be deleted."
+    if @product.destroy
+      redirect_to products_path, notice: "Product deleted successfully."
+    else
+      redirect_to products_path, alert: @product.errors.full_messages.to_sentence
     end
-
-    @product.destroy
-    redirect_to products_path, notice: "Product deleted successfully."
   end
 
   private
-  def find_product
+  def load_product
     @product = Product.find(params[:id])
   end
 

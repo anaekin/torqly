@@ -44,7 +44,7 @@
             <p class="fw-normal mb-1"><%= b.num_days %></p>
           </td>
           <td>
-            <p class="fw-normal mb-1"><%= number_to_currency(b.booked_price * b.num_days, unit: "€", :unit => "€", :separator => ",", :delimiter => ".", format: "%u%n") %></p>
+            <p class="fw-normal mb-1"><%= render "shared/currency", amount: b.booked_price * b.num_days %></p>
           </td>
           <td>
             <span class="badge <%= "bg-warning" if b.status == "pending" %> <%= "bg-success" if b.status == "confirmed" %> <%= "bg-danger" if b.status == "cancelled" %> <%= "bg-light" if b.status == "completed" %> rounded-pill d-inline"><%= b.status.capitalize %></span>

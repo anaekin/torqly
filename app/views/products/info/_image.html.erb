@@ -1,13 +1,3 @@
-<%
-=begin%>
-<% if product.image.attached? %>
-<%= image_tag product.image, class: "card-img-top card-img-ratio", alt: product.title, loading: "lazy" %>
-<% else %>
-<img src="https://placehold.co/800x600?text=No+Image" class="card-img-top card-img-ratio" alt="No image">
-<% end %>
-<%
-=end%>
-
 <% if product.image.attached? %>
 <%= image_tag url_for(product.image), class: "card-img-top card-img-fixed" %>
 <% else %>
