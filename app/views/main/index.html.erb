@@ -27,8 +27,9 @@
             <%= link_to "View", product_path(product), class: "btn btn-primary", role: "button" %>
             <% if is_logged_in? %>
             <%= link_to "Book", new_booking_path(product_id: product.id, 
-                                        start_date: params[:start_date].presence, 
-                                        end_date: params[:end_date].presence || Date.tomorrow,), 
+                                        start_date: params[:start_date].presence || Date.today, 
+                                        end_date: params[:end_date].presence ||  params[:start_date].presence || Date.today
+                                        ), 
                                         class: "btn btn-outline-primary", 
                                         role: "button" %>
             <% end %>

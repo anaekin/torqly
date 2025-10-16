@@ -11,7 +11,7 @@
     <%= render "bookings/booking", booking: @booking %>
   </div>
   <div class="col col-md-4">
-    <%= form_with model: @payment, url: create_payment_path, local: true do |f|  %>
+    <%= form_with model: @payment, url: payments_path, local: true do |f|  %>
     <%= render "shared/form_errors", object: f.object %>
     <%= f.hidden_field :booking_id, value: @booking.id %>
     <div class="mb-3" data-mdb-input-init>

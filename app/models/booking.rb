@@ -30,6 +30,19 @@ class Booking < ApplicationRecord
     status == "pending"
   end
 
+  def confirm!(payment)
+    payment.update!(status: "succeeded")
+    update!(status: "confirmed")
+  end
+
+  def cancel!
+    @booking.update!(status: "cancelled")
+
+    # Here we might need to modify logic because payment refund may take time.
+    # For now, we change the status to refunded
+    @booking.payments.where(status: "succeeded").update_all!(status: "refunded")
+  end
+
   private
 
   def set_default_values

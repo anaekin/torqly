@@ -30,14 +30,10 @@ Rails.application.routes.draw do
 
   resources :products
 
-  get "bookings", to: "bookings#new", as: "new_booking"
-  post "bookings", to: "bookings#create", as: "create_booking"
-  get "bookings/my", to: "bookings#index", as: "list_bookings"
-  get "bookings/:id", to: "bookings#show", as: "view_booking"
-  delete "bookings/:id", to: "bookings#destroy", as: "delete_booking"
+  resources :bookings
 
-  get "bookings/:id/payment/new", to: "payments#new", as: "new_payment"
-  post "bookings/:id/payment", to: "payments#create", as: "create_payment"
+  get "bookings/:id/payment", to: "payments#new", as: "new_payment"
+  post "bookings/:id/payment", to: "payments#create", as: "payments"
 
   root to: "main#index"
 end

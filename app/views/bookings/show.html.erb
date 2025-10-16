@@ -18,14 +18,8 @@
   </div>
   <div class="col col-md-4">
     <%= render "booking", booking: @booking %>
-    <%= form_with model: @booking, url: bookings_path, local: true do |f|  %>
-    <%= render "shared/form_errors", object: f.object %>
-    <div class="mb-3">
-      <%= f.label :license_number, "License number", class: "form-label" %>
-      <%= f.text_field :license_number, class: "form-control", required: true %>
+    <div class="d-flex flex-column align-items-end">
+      <p><strong>License Number:</strong> <%= @booking.license_number %></p>
     </div>
-
-    <%= f.submit "Confirm & Pay", class: "btn btn-primary w-100" %>
-    <% end %>
   </div>
 </div>

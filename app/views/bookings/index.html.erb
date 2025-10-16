@@ -50,12 +50,13 @@
             <span class="badge <%= "bg-warning" if b.status == "pending" %> <%= "bg-success" if b.status == "confirmed" %> <%= "bg-danger" if b.status == "cancelled" %> <%= "bg-light" if b.status == "completed" %> rounded-pill d-inline"><%= b.status.capitalize %></span>
           </td>
           <td>
+            <%= link_to "View", booking_path(id: b), class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% if b.pending? %>
             <%= link_to "Pay", new_payment_path(id: b), class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% end %>
 
             <% if b.pending? or b.confirmed? %>
-            <%= button_to "Cancel", delete_booking_path(b), method: :delete, data: { turbo_confirm: "Do you want to delete the booking?" }, class: "btn btn-link btn-sm btn-rounded", role: "button" %>
+            <%= button_to "Cancel", booking_path(b), method: :delete, data: { turbo_confirm: "Do you want to delete the booking?" }, class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% else %>
             -
             <% end %>
