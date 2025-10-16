@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h3 class="mb-4 fw-bold text-primary text-center">Reset your password</h3>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true, placeholder: "abc@example.com" %>
+      <%= f.label :email, class: "form-label" %>
+    </div>
+    <div class="text-center">
+      <%= f.submit "Reset password", class: "btn btn-primary" %>
+    </div>
+    <% end %>
+    <div class="my-2">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

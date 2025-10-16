@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h3 class="mb-4 fw-bold text-primary text-center">Create your account</h3>
+    <%= form_for(resource, as: resource_name, url: user_registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.text_field :name, class: "form-control", required: true, placeholder: "Your name" %>
+      <%= f.label :name, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true, placeholder: "abc@example.com" %>
+      <%= f.label :email, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-4" data-mdb-input-init>
+      <%= f.password_field :password, autocomplete: "new-password", class: "form-control", required: true, placeholder: "Password" %>
+      <%= f.label :password, class: "form-label" %>
+      <div class="form-helper px-1">
+        <% if @minimum_password_length %>
+        <%= @minimum_password_length %> characters minimum
+        <% end %>
+      </div>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", required: true, placeholder: "Confirm your password" %>
+      <%= f.label :password_confirmation, class: "form-label" %>
+    </div>
+    <div class="text-center">
+      <%= f.submit "Sign up", class: "btn btn-primary" %>
+    </div>
+    <% end %>
+    <div class="my-2">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4 offset-md-4">
     <h3 class="mb-4 fw-bold text-primary text-center">Sign in to Torqly</h3>
-    <%= form_with url: login_path do |form| %>
+    <%= form_with url: user_session_path do |form| %>
     <div class="form-outline mb-3" data-mdb-input-init>
       <%= form.email_field :email, class: "form-control", required: true, placeholder: "abc@example.com" %>
       <%= form.label :email, class: "form-label" %>

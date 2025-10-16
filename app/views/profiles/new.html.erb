@@ -3,10 +3,10 @@
     <h3 class="mb-4 fw-bold text-primary text-center">Your profile</h3>
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title"><%= Current.user.name %></h5>
-        <h6 class="card-subtitle mb-2 text-muted"><small>Joined</strong> <%= Current.user.created_at.strftime("%B %d, %Y") %></small></h6>
-        <p class="card-text"><strong>Email:</strong> <%= Current.user.email %></p>
-        <%= link_to "Edit Profile", edit_profile_path(Current.user), class: "btn btn-primary" %>
+        <h5 class="card-title"><%= current_user.name %></h5>
+        <h6 class="card-subtitle mb-2 text-muted"><small>Joined</strong> <%= current_user.created_at.strftime("%B %d, %Y") %></small></h6>
+        <p class="card-text"><strong>Email:</strong> <%= current_user.email %></p>
+        <%= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-primary" %>
       </div>
     </div>
   </div>

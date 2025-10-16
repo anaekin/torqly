@@ -1,6 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :load_booking, only: %i[ new create ]
-  before_action :require_login!
+
+  before_action :authenticate_user!
 
   def new
     @back_path = request.referer || root_path
@@ -32,7 +33,7 @@ class PaymentsController < ApplicationController
 
   private
     def load_booking
-      @booking = Booking.find_by(id: params[:id], user_id: Current.user.id)
+      @booking = Booking.find_by(id: params[:id], user_id: current_user.id)
     end
 
     def payment_params

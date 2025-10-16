@@ -14,10 +14,8 @@ export default class extends Controller {
     this.specsTargets.forEach((section) => {
       const show = section.dataset.type === slug;
 
-      // show/hide the whole section
       section.classList.toggle("d-none", !show);
 
-      // and enable/disable its fields so only the visible spec submits
       section
         .querySelectorAll("input, select, textarea, button, radio")
         .forEach((el) => {

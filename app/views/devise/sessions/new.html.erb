@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h3 class="mb-4 fw-bold text-primary text-center">Sign in to Torqly</h3>
+    <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.email_field :email, class: "form-control", required: true, autofocus: true, autocomplete: "email", placeholder: "abc@example.com" %>
+      <%= f.label :email, class: "form-label" %>
+    </div>
+    <div class="form-outline mb-3" data-mdb-input-init>
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-control", required: true, placeholder: "Password" %>
+      <%= f.label :password, class: "form-label" %>
+    </div>
+    <% if devise_mapping.rememberable? %>
+    <div class="field">
+      <%= f.check_box :remember_me, class: "form-check-input", id: "rememberMe"%>
+      <%= f.label :remember_me, class: "form-check-label", for: "rememberMe" %>
+    </div>
+    <% end %>
+    <div class="text-center">
+      <%= f.submit "Log in", class: "btn btn-primary" %>
+    </div>
+    <% end %>
+    <div class="my-2">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

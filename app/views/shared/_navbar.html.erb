@@ -11,11 +11,6 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
-        <%
-=begin%>
-        <img src="assets/images/torqly_logo.png" height="15" alt="Torqly Logo" loading="lazy" />
-        <%
-=end%>
         <%= image_tag "torqly_logo.png", alt: "Torqly Logo", class: "rounded", height: 40 %>
       </a>
       <!-- Left links -->
@@ -39,58 +34,26 @@
     <!-- Right elements -->
     <div class="d-flex align-items-center">
 
-      <!-- Avatar -->
       <% if !is_logged_in? %>
-      <% if !current_page?(login_path) && !current_page?(signup_path) %>
-      <%= link_to "Log in", login_path, class: "btn btn-secondary me-3" %>
-      <%= link_to "Sign Up", signup_path, class: "btn btn-primary me-3" %>
+      <% if !current_page?(new_user_session_path) && !current_page?(new_user_registration_path) %>
+      <%= link_to "Log in", new_user_session_path, class: "btn btn-secondary me-3" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary me-3" %>
       <% end %>
       <% else %>
-      <span class="me-3">Hello, <%= Current.user.name %></span>
-      <!-- Icon -->
-      <%
-=begin%>
-      <a class="text-reset me-3" href="#">
-        <i class="fas fa-shopping-cart"></i>
-      </a>
-      <%
-=end%>
-
-      <!-- Notifications -->
-      <%
-=begin%>
+      <span class="me-3">Hello, <%= current_user.name %></span>
       <div class="dropdown">
-        <a data-mdb-dropdown-init class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false">
-          <i class="fas fa-bell"></i>
-          <span class="badge rounded-pill badge-notification bg-danger">1</span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" href="#">Some news</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Another news</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </li>
-        </ul>
-      </div>
-      <%
-=end%>
-      <div class="dropdown">
-        <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarProfileMenu" role="button" aria-expanded="false">
+        <button class="nav-link dropdown-toggle" id="navbarProfileMenu" type="button" aria-expanded="false" data-controller="mdb-dropdown" data-mdb-dropdown-init data-turbo-permanent>
           <i class="fas fa-user"></i>
-        </a>
+        </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileMenu">
           <li>
-            <%= link_to "My profile", view_profile_path(Current.user), class: "dropdown-item" %>
+            <%= link_to "My profile", view_profile_path(current_user), class: "dropdown-item" %>
           </li>
           <li>
             <%= link_to "My bookings", bookings_path, class: "dropdown-item"  %>
           </li>
           <li>
-            <%= link_to "Log out", logout_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "dropdown-item" %>
+            <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "dropdown-item" %>
           </li>
         </ul>
       </div>

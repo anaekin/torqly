@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :require_login!
+  before_action :authenticate_user!
 
   def new
   end
@@ -8,8 +8,8 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    if Current.user.update(profile_params)
-      redirect_to view_profile_path(Current.user), notice: "Profile updated successfully."
+    if current_user.update(profile_params)
+      redirect_to view_profile_path(current_user), notice: "Profile updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end

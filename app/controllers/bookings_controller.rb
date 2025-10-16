@@ -3,12 +3,12 @@ require "prawn/table"
 class BookingsController < ApplicationController
   include DateFiltering, ProductAvailability, ApplicationHelper
 
-  before_action :require_login!
+  before_action :authenticate_user!
   before_action :set_back_path, only: [ :new, :show ]
   before_action :load_booking, only: [ :show, :destroy ]
 
   def index
-    @bookings = Booking.where(user_id: Current.user.id)&.order(created_at: :desc)
+    @bookings = Booking.where(user_id: current_user.id)&.order(created_at: :desc)
   end
 
   def new
@@ -30,7 +30,7 @@ class BookingsController < ApplicationController
       end_date: dates[:end_date]
     }
 
-    @booking = Current.user.bookings.new(
+    @booking = current_user.bookings.new(
       product: @product, **session[:booking_params]
     )
   end
@@ -40,7 +40,7 @@ class BookingsController < ApplicationController
       redirect_to root_path, alert: "Please search and select a product" and return
     end
 
-    @booking = Current.user.bookings.new(
+    @booking = current_user.bookings.new(
       create_params.merge(session[:booking_params])
     )
     session.delete(:booking_params)
@@ -98,7 +98,7 @@ class BookingsController < ApplicationController
   end
 
   def load_booking
-    @booking = Booking.find_by!(id: params[:id], user_id: Current.user.id)
+    @booking = Booking.find_by!(id: params[:id], user_id: current_user.id)
   end
 
   def new_params

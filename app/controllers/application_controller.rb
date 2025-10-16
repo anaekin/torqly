@@ -1,31 +1,28 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   helper_method :is_admin?, :is_logged_in?
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
-  before_action :set_current_user
-
-  def set_current_user
-    Current.user = User.find_by(id: session[:user_id]) if session[:user_id]
-  end
-
   def is_admin?
-    Current.user&.admin?
+    current_user&.admin?
   end
 
   def is_logged_in?
-    Current.user.present?
+    current_user.present?
   end
 
   def require_login!
-    unless Current.user
-      redirect_to login_path, alert: "You must be logged in to access this section."
+    unless current_user
+      redirect_to new_user_session_path, alert: "You must be logged in to access this section."
     end
   end
 
   def require_admin!
-    unless Current.user&.admin?
+    unless current_user&.admin?
       redirect_to root_path, alert: "You must be an admin to access this section."
     end
   end
@@ -33,5 +30,11 @@ class ApplicationController < ActionController::Base
   private
   def render_not_found
     render file: Rails.root.join("public/404.html"), layout: false, status: :not_found
+  end
+
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up,        keys: [ :name ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name ])
   end
 end

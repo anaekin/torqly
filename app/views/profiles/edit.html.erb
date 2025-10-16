@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4 offset-md-4">
     <h3 class="mb-4 fw-bold text-primary text-center">Edit profile</h3>
-    <%= form_with model: Current.user, url: update_profile_path, method: :patch do |form| %>
+    <%= form_with model: current_user, url: user_registration_path, method: :patch do |form| %>
 
     <%= render "shared/form_errors", object: form.object %>
 
