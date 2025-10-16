@@ -24,8 +24,12 @@
       <p><strong>License Number:</strong> <%= @booking.license_number %></p>
     </div>
     <h3 class="fw-bold my-3 text-end">Payment details</h3>
+    <% if @booking.payments.any? %>
     <% @booking.payments.each do |payment| %>
     <%= render "payments/payment", payment: payment %>
+    <% end %>
+    <% else %>
+    No payments found
     <% end %>
   </div>
 </div>

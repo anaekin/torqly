@@ -30,10 +30,13 @@ Rails.application.routes.draw do
 
   resources :products
 
-  resources :bookings
+  resources :bookings do
+    member do
+      resources :payments, only: [ :new, :create ]
 
-  get "bookings/:id/payment", to: "payments#new", as: "new_payment"
-  post "bookings/:id/payment", to: "payments#create", as: "payments"
+      get "print", to: "bookings#print", as: "print"
+    end
+  end
 
   root to: "main#index"
 end

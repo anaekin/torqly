@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Booking <%= @booking.id %> Confirmation</title>
+  <style>
+    body {
+      font-family: Helvetica;
+      font-size: 14px;
+      color: #222;
+    }
+
+    h1,
+    h2 {
+      margin: 0 0 6px 0;
+    }
+
+    .section {
+      margin: 10px 0 12px 0;
+    }
+
+    .muted {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .badge {
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .label {
+      display: inline-block;
+      width: 150px;
+      font-weight: bold;
+    }
+
+    .row {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>Torqly - Booking Confirmation</h1>
+    <h4>Booking #: <%= @booking.id %></h4><br>
+    <div class="muted">Created: <%= @booking.created_at.to_date %></div>
+  </div>
+
+  <div class="section">
+    <h2>Customer</h2>
+    <div class="row"><span class="label">Name:</span> <%= @booking.user.name %></div>
+    <div class="row"><span class="label">Email:</span> <%= @booking.user.email %></div>
+    <div class="row"><span class="label">License number:</span> <%= @booking.license_number %></div>
+  </div>
+
+  <div class="section">
+    <h2>Booking Details</h2>
+    <div class="row"><span class="label">Start date:</span> <%= @booking.start_date %></div>
+    <div class="row"><span class="label">End date:</span> <%= @booking.end_date %></div>
+    <div class="row"><span class="label">Days:</span> <%= @booking.num_days %></div>
+    <div class="row"><span class="label">Status:</span> <%= @booking.status.humanize %></div>
+    <div class="row"><span class="label">Price per day:</span> <%= render "shared/currency", amount: @booking.booked_price %></div>
+    <div class="row"><span class="label"><strong>Total:</strong></span> <strong><%= render "shared/currency", amount: @booking.total_amount %></strong></div>
+  </div>
+
+  <div class="section">
+    <h2>Product</h2>
+    <div class="row"><span class="label">Title:</span> <%= @booking.product.title %></div>
+    <div class="row"><span class="label">Type:</span> <%= @booking.product.product_type&.name || @booking.product.product_type&.slug %></div>
+    <div class="row"><span class="label">Brand / Model / Year:</span> <%= [@booking.product.brand, @booking.product.model, @booking.product.year].join(", ") %></div>
+    <div class="row"><span class="label">Product price:</span> <%= render "shared/currency", amount: @booking.booked_price %></div>
+  </div>
+</body>
+
+</html>

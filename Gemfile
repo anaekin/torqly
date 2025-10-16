@@ -46,6 +46,8 @@ gem "sidekiq"
 gem "sidekiq-cron"
 
 gem "prawn"
+gem "prawn-table"
+gem "prawn-html"
 
 gem "nokogiri"
 

@@ -57,8 +57,10 @@
 
             <% if b.pending? || (b.confirmed? && !b.started?)%>
             <%= button_to "Cancel", booking_path(b), method: :delete, data: { turbo_confirm: "Do you want to delete the booking?" }, class: "btn btn-link btn-sm btn-rounded", role: "button" %>
-            <% else %>
-            -
+            <% end %>
+
+            <% if b.confirmed? %>
+            <%= link_to "Print", print_booking_path(b), target: "_blank", class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% end %>
           </td>
         </tr>

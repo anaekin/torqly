@@ -1,5 +1,7 @@
+require "prawn/table"
+
 class BookingsController < ApplicationController
-  include DateFiltering, ProductAvailability
+  include DateFiltering, ProductAvailability, ApplicationHelper
 
   before_action :require_login!
   before_action :set_back_path, only: [ :new, :show ]
@@ -78,6 +80,16 @@ class BookingsController < ApplicationController
     rescue
       redirect_to bookings_path, alert: @booking.errors.full_messages.to_sentence
     end
+  end
+
+  def print
+    @booking = Booking.find(params[:id])
+    template = render_to_string(partial: "bookings/pdf_header", formats: [ :html ], layout: false)
+
+    send_data Bookings::BookingPdf.new(@booking, template).render,
+              filename: "booking_#{@booking.id}.pdf",
+              type: "application/pdf",
+              disposition: "inline"
   end
 
   private
