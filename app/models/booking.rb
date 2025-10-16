@@ -53,7 +53,7 @@ class Booking < ApplicationRecord
   end
 
   def cancel_unpaid
-    CancelUnpaidBookingJob.set(wait: 1.hour).perform_later(id)
+    CancelUnpaidBookingJob.add_job(id)
   end
 
   # TODO: ProductAvailability concern to be moved here

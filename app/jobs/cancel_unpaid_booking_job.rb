@@ -1,12 +1,16 @@
 class CancelUnpaidBookingJob < ApplicationJob
   queue_as :default
 
+  WINDOW = 2.minute
+
+  def self.add_job(booking_id)
+    set(wait: WINDOW).perform_later(booking_id)
+  end
+
   def perform(booking_id)
     booking = Booking.find_by(id: booking_id)
-    return unless booking
+    return unless booking&.pending?
 
-    if booking.pending? && booking.created_at <= 1.hour.ago
-      booking.cancel!
-    end
+    booking.cancel!
   end
 end
