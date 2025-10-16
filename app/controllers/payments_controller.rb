@@ -7,13 +7,13 @@ class PaymentsController < ApplicationController
     if @booking.nil?
       redirect_to bookings_path, alert: "You are not authorized to create a payment for this booking."
     else
-      @payment = Payment.new(booking_id: params[:id], amount: @booking.booked_price * @booking.num_days)
+      @payment = Payment.new(booking_id: params[:id], amount: @booking.total_amount)
     end
   end
 
 
   def create
-    @payment = Payment.new(payment_params.merge(booking_id: @booking.id, amount: @booking.booked_price * @booking.num_days))
+    @payment = @booking.payments.build(payment_params.merge(booking_id: @booking.id, amount: @booking.total_amount))
 
     begin
       Payment.transaction do

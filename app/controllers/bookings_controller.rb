@@ -10,24 +10,37 @@ class BookingsController < ApplicationController
   end
 
   def new
-    dates = parse_dates
+    if new_params[:product_id].nil?
+      redirect_to root_path, alert: "Please search and select a product" and return
+    end
+
+    dates = parse_dates(new_params[:start_date], new_params[:end_date])
     if dates[:error]
       flash.now[:alert] = dates[:error]
       redirect_to root_path, status: :unprocessable_entity and return
     end
 
+    @product = Product.find(new_params[:product_id].to_i)
+
     session[:booking_params] = {
-      user_id: Current.user.id,
-      product_id: params[:product_id].to_i,
+      product_id: @product.id,
       start_date: dates[:start_date],
       end_date: dates[:end_date]
     }
 
-    @booking = Booking.new(**session[:booking_params])
+    @booking = Current.user.bookings.new(
+      product: @product, **session[:booking_params]
+    )
   end
 
   def create
-    @booking = Booking.new(booking_params.merge(session[:booking_params] || { user_id: Current.user.id }))
+    if session[:booking_params].present? && session[:booking_params][:product_id].present?
+      redirect_to root_path, alert: "Please search and select a product" and return
+    end
+
+    @booking = Current.user.bookings.new(
+      create_params.merge(session[:booking_params])
+    )
     session.delete(:booking_params)
 
     if !is_product_available?(@booking.start_date, @booking.end_date, @booking.product_id)
@@ -45,14 +58,14 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @back_path = request.referer || root_path
+    @back_path = request.referer || bookings_path
   end
 
   def destroy
     if !@booking.pending? and !@booking.confirmed?
       redirect_to bookings_path, alert: "Only pending and confirmed bookings can be cancelled."
       return
-    elsif @booking.start_date <= Date.today
+    elsif @booking.started?
       redirect_to bookings_path, alert: "Booking cannot be cancelled as it has already started."
       return
     end
@@ -61,7 +74,7 @@ class BookingsController < ApplicationController
       Booking.transaction do
         @booking.cancel!
       end
-      redirect_to bookings_path, notice: "Booking cancelled successfully."
+      redirect_to bookings_path, notice: "Booking cancelled successfully. If you already paid, it will be refunded."
     rescue
       redirect_to bookings_path, alert: @booking.errors.full_messages.to_sentence
     end
@@ -76,7 +89,11 @@ class BookingsController < ApplicationController
     @booking = Booking.find_by!(id: params[:id], user_id: Current.user.id)
   end
 
-  def booking_params
-    params.require(:booking).permit(:user_id, :product_id, :start_date, :end_date, :license_number, :booked_price)
+  def new_params
+    params.permit(:product_id, :start_date, :end_date)
+  end
+
+  def create_params
+    params.require(:booking).permit(:license_number)
   end
 end

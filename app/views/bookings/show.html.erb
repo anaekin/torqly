@@ -7,6 +7,8 @@
       </div>
     </div>
   </div>
+</div>
+<div class="row">
   <div class="col col-md-4 offset-md-2">
     <div class="card rounded-2 shadow-3-strong border border-secondary">
       <%= render "products/info/image", product: @booking.product %>
@@ -21,5 +23,9 @@
     <div class="d-flex flex-column align-items-end">
       <p><strong>License Number:</strong> <%= @booking.license_number %></p>
     </div>
+    <h3 class="fw-bold my-3 text-end">Payment details</h3>
+    <% @booking.payments.each do |payment| %>
+    <%= render "payments/payment", payment: payment %>
+    <% end %>
   </div>
 </div>

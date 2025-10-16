@@ -6,6 +6,8 @@ class Payment < ApplicationRecord
 
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
+  scope :succeeded, -> { where(status: "succeeded") }
+
   def pending?
     status == "pending"
   end
@@ -20,5 +22,9 @@ class Payment < ApplicationRecord
 
   def refunded?
     status == "refunded"
+  end
+
+  def refund!
+    update!(status: "refunded")
   end
 end

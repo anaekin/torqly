@@ -47,7 +47,7 @@
             <p class="fw-normal mb-1"><%= render "shared/currency", amount: b.booked_price * b.num_days %></p>
           </td>
           <td>
-            <span class="badge <%= "bg-warning" if b.status == "pending" %> <%= "bg-success" if b.status == "confirmed" %> <%= "bg-danger" if b.status == "cancelled" %> <%= "bg-light" if b.status == "completed" %> rounded-pill d-inline"><%= b.status.capitalize %></span>
+            <span class="badge <%= "badge-warning" if b.pending? %> <%= "badge-success" if b.confirmed? %> <%= "badge-danger" if b.cancelled? %> <%= "badge-info" if b.completed? %> rounded-pill d-inline"><%= b.status.capitalize %></span>
           </td>
           <td>
             <%= link_to "View", booking_path(id: b), class: "btn btn-link btn-sm btn-rounded", role: "button" %>
@@ -55,7 +55,7 @@
             <%= link_to "Pay", new_payment_path(id: b), class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% end %>
 
-            <% if b.pending? or b.confirmed? %>
+            <% if b.pending? || (b.confirmed? && !b.started?)%>
             <%= button_to "Cancel", booking_path(b), method: :delete, data: { turbo_confirm: "Do you want to delete the booking?" }, class: "btn btn-link btn-sm btn-rounded", role: "button" %>
             <% else %>
             -

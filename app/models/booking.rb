@@ -14,6 +14,8 @@ class Booking < ApplicationRecord
 
   attribute :status, default: "pending"
 
+  after_commit :cancel_unpaid, on: :create
+
   def cancelled?
     status == "cancelled"
   end
@@ -30,25 +32,35 @@ class Booking < ApplicationRecord
     status == "pending"
   end
 
+  def started?
+    start_date <= Date.today and confirmed?
+  end
+
+  def total_amount
+    booked_price * num_days
+  end
+
   def confirm!(payment)
     payment.update!(status: "succeeded")
     update!(status: "confirmed")
   end
 
   def cancel!
-    @booking.update!(status: "cancelled")
+    transaction do
+      update!(status: :cancelled)
+      payments.succeeded.find_each { |p| RefundPaymentJob.perform_later(p.id) }
+    end
+  end
 
-    # Here we might need to modify logic because payment refund may take time.
-    # For now, we change the status to refunded
-    @booking.payments.where(status: "succeeded").update_all!(status: "refunded")
+  def cancel_unpaid
+    CancelUnpaidBookingJob.set(wait: 1.hour).perform_later(id)
+  end
+
+  # TODO: ProductAvailability concern to be moved here
+  def self.available_products(start_date, end_date, product_type_slug)
   end
 
   private
-
-  def set_default_values
-    self.num_days = (end_date - start_date).to_i + 1
-    self.booked_price = product.price if self.booked_price.nil?
-  end
 
   def valid_start_date
     return unless start_date
@@ -62,5 +74,10 @@ class Booking < ApplicationRecord
     if end_date < start_date
       errors.add(:end_date, "should be after or equal to start date")
     end
+  end
+
+  def set_default_values
+    self.num_days = (end_date - start_date).to_i + 1
+    self.booked_price = product.price
   end
 end

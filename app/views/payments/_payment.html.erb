@@ -1,0 +1,7 @@
+<div class="d-flex flex-column align-items-end">
+  <p><strong>Payment Status:</strong> <span class="badge <%= "badge-warning" if payment.pending? %> <%= "badge-success" if payment.succeeded? %> <%= "badge-danger" if payment.failed? %> <%= "badge-warning" if payment.refunded? %> rounded-pill d-inline"><%= payment.status.capitalize %></span> </p>
+  <p><strong>Payment Type:</strong> <%= payment.payment_type.humanize %></p>
+  <p><strong>Amount:</strong> <%= render "shared/currency", amount: payment.amount %></p>
+  <p><strong>Provider:</strong> <%= payment.provider? ? payment.provider : "-" %></p>
+  <p><strong>Payment Reference:</strong> <%= payment.payment_ref? ? payment.payment_ref : "-" %></p>
+</div>
