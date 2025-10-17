@@ -1,9 +1,11 @@
 class Product < ApplicationRecord
   belongs_to :product_type
-  has_one :description, dependent: :destroy
+  has_one :description, dependent: :destroy, inverse_of: :product
   has_one_attached :image, dependent: :purge_later
   has_many :bookings, dependent: :restrict_with_error
   accepts_nested_attributes_for :description
+
+  before_validation :update_product_type, if: :new_record?
 
   default_scope { includes(:product_type, :description) }
 
@@ -13,12 +15,9 @@ class Product < ApplicationRecord
   validates :enabled, inclusion: { in: [ true, false ] }
   validates :product_type, presence: true
   validates :description, presence: true
+  validates_associated :description
 
   scope :enabled, -> { where(enabled: true) }
-
-  after_initialize :initialize_description, if: :new_record?
-
-  before_validation :update_product_type, if: :new_record?
 
   def product_type_slug = product_type&.slug
   def car? = product_type_slug == ProductType.car_slug
@@ -29,25 +28,10 @@ class Product < ApplicationRecord
     description.product_type = product_type
     description.type =
       case product_type.slug
-      when ProductType.car_slug then "CarDescription"
-      when ProductType.motorcycle_slug then "MotorcycleDescription"
-      when ProductType.scooter_slug then "ScooterDescription"
-      else "Description"
+      when ProductType.car_slug then CarDescription
+      when ProductType.motorcycle_slug then MotorcycleDescription
+      when ProductType.scooter_slug then ScooterDescription
+      else Description
       end
-  end
-
-  private
-
-  def initialize_description
-    return if description
-
-    case product_type&.slug || ProductType.find_by(id: product_type_id)&.slug
-    when ProductType.car_slug
-      build_description(type: "CarDescription")
-    when ProductType.motorcycle_slug
-      build_description(type: "MotorcycleDescription")
-    when ProductType.scooter_slug
-      build_description(type: "ScooterDescription")
-    end
   end
 end

@@ -9,6 +9,7 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new(enabled: true, product_type_id: @product_types.first&.id)
+    @product.build_description unless @product.description
   end
 
   def create
