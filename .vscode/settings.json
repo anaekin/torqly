@@ -10,6 +10,16 @@
       "name": "Torqly",
       "database": "torqly_db",
       "username": "torqly_dev"
+    },
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "torqly_test",
+      "database": "torqly_db_test",
+      "username": "torqly_test"
     }
   ]
 }
