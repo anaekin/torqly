@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, only: [ :new, :create, :edit, :destroy ]
+  before_action :require_admin!, except: [ :show ]
   before_action :load_product_types, only: [ :new, :create, :edit, :destroy ]
   before_action :load_product, only: [ :show, :edit, :update, :destroy ]
 

@@ -6,6 +6,8 @@ class Payment < ApplicationRecord
 
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
+  attribute :payment_type, default: nil
+
   scope :succeeded, -> { where(status: "succeeded") }
 
   def pending?

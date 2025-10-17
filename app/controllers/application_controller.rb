@@ -15,14 +15,8 @@ class ApplicationController < ActionController::Base
     current_user.present?
   end
 
-  def require_login!
-    unless current_user
-      redirect_to new_user_session_path, alert: "You must be logged in to access this section."
-    end
-  end
-
   def require_admin!
-    unless current_user&.admin?
+    unless is_admin?
       redirect_to root_path, alert: "You must be an admin to access this section."
     end
   end
@@ -34,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   protected
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up,        keys: [ :name ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name ])
   end
 end
